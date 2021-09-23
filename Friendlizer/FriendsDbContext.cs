@@ -15,5 +15,11 @@ namespace Friendlizer
         }
 
         public DbSet<FriendsSet> FriendsSetItems { get; set; }
+        public DbSet<Relation> Relations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Relation>().HasKey(table => new { table.FriendsSetId, table.FirstPersonId, table.SecondPersonId });
+        }
     }
 }

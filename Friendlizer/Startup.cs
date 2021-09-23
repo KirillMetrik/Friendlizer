@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Friendlizer.Services;
 
 namespace Friendlizer
 {
@@ -31,6 +32,7 @@ namespace Friendlizer
             services.AddControllers();
             services.AddDbContext<FriendsDbContext>(opt =>
                                                opt.UseInMemoryDatabase("FriendsRelationsList"));
+            services.AddSingleton<IFileParser, FileParser>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Friendlizer", Version = "v1" });

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Friendlizer;
 using Friendlizer.Models;
+using System.IO;
+using Friendlizer.Services;
 
 namespace Friendlizer.Controllers
 {
@@ -15,10 +17,12 @@ namespace Friendlizer.Controllers
     public class FriendsSetsController : ControllerBase
     {
         private readonly FriendsDbContext _context;
+        private readonly IFileParser _fileParser;
 
-        public FriendsSetsController(FriendsDbContext context)
+        public FriendsSetsController(FriendsDbContext context, IFileParser fileParser)
         {
             _context = context;
+            _fileParser = fileParser;
         }
 
         // GET: api/FriendsSets
@@ -75,13 +79,24 @@ namespace Friendlizer.Controllers
 
         // POST: api/FriendsSets
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<FriendsSet>> PostFriendsSet(FriendsSet friendsSet)
+        [HttpPost, DisableRequestSizeLimit]
+        public async Task<ActionResult<FriendsSet>> PostFriendsSet(IFormFile file)
         {
-            _context.FriendsSetItems.Add(friendsSet);
-            await _context.SaveChangesAsync();
+            if (file == null)
+            {
+                return BadRequest("File is required!");
+            }
 
-            return CreatedAtAction("GetFriendsSet", new { id = friendsSet.ID }, friendsSet);
+            var friendsSet = new FriendsSet();
+            friendsSet.Filename = file.FileName;
+            var newEntity = _context.FriendsSetItems.Add(friendsSet);
+            var relations = await _fileParser.Parse(file, newEntity.Entity.ID);
+            _context.Relations.AddRange(relations);
+
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetFriendsSet", 
+                new { id = newEntity.Entity.ID }, 
+                new { id = newEntity.Entity.ID, filename = newEntity.Entity.Filename, imported = relations.Count() });
         }
 
         // DELETE: api/FriendsSets/5
