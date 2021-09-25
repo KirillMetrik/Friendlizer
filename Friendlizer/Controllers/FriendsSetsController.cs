@@ -96,7 +96,7 @@ namespace Friendlizer.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetFriendsSet", 
                 new { id = newEntity.Entity.ID }, 
-                new { id = newEntity.Entity.ID, filename = newEntity.Entity.Filename, imported = relations.Count() });
+                new FriendsSetImportResult { id = newEntity.Entity.ID, filename = newEntity.Entity.Filename, imported = relations.Count() });
         }
 
         // DELETE: api/FriendsSets/5

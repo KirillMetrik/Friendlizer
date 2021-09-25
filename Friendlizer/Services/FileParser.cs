@@ -14,7 +14,7 @@ namespace Friendlizer.Services
         {
             if (file == null)
             {
-                throw new ArgumentException("File cannot be null!");
+                throw new ArgumentNullException("file");
             }
 
             using var reader = new StreamReader(file.OpenReadStream());
@@ -23,13 +23,13 @@ namespace Friendlizer.Services
 
             while (line != null)
             {
-                var pair = line.Split(' ').Select(id => long.Parse(id)).ToArray();
+                var pair = line.Split(' ').ToArray();
                 if (pair.Length != 2)
                 {
                     throw new ArgumentException($"File contents are invalid, cannot parse line '{line}'!", "file");
                 }
 
-                result.Add(new Relation { FriendsSetId = setId, FirstPersonId = pair[0], SecondPersonId = pair[1] });
+                result.Add(new Relation { FriendsSetId = setId, FirstPersonId = long.Parse(pair[0]), SecondPersonId = long.Parse(pair[1]) });
                 line = await reader.ReadLineAsync();
             }
             return result;
