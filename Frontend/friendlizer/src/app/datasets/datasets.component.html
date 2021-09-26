@@ -1,0 +1,4 @@
+<input #txtInputFile hidden="true" type="file" onclick="this.value=null" (change)="txtInputChange()" accept=".txt" />
+<button mat-fab class="fab-bottom-right" color="warn" aria-label="Import Dataset" title="Import Dataset" (click)="txtInputFile.click()">
+    <mat-icon>add</mat-icon>
+</button>
