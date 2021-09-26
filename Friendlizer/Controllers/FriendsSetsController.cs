@@ -9,6 +9,7 @@ using Friendlizer;
 using Friendlizer.Models;
 using System.IO;
 using Friendlizer.Services;
+using Friendlizer.Controllers.ResultModels;
 
 namespace Friendlizer.Controllers
 {
@@ -44,6 +45,26 @@ namespace Friendlizer.Controllers
             }
 
             return friendsSet;
+        }
+
+        [HttpGet("{id}/stats")]
+        public async Task<ActionResult<Stats>> GetStats(long id)
+        {
+            if (!FriendsSetExists(id))
+            {
+                return NotFound();
+            }
+
+            var res = new Stats();
+            res.TotalUsers = await (from r in _context.Relations where r.FriendsSetId == id select r.FirstPersonId).Union(
+                from r in _context.Relations where r.FriendsSetId==id select r.SecondPersonId).CountAsync();
+
+            var counts = from r in _context.Relations
+                        where r.FriendsSetId == id
+                        group r by r.FirstPersonId into grp
+                        select grp.Count();
+            res.AvgFriendsCount = (long)counts.Average();
+            return res;
         }
 
         // PUT: api/FriendsSets/5
@@ -85,6 +106,12 @@ namespace Friendlizer.Controllers
             if (file == null)
             {
                 return BadRequest("File is required!");
+            }
+            if ((from f in _context.FriendsSetItems
+                 where f.Filename == file.FileName
+                 select f).Count() != 0)
+            {
+                return BadRequest("This file was already imported!");
             }
 
             var friendsSet = new FriendsSet();

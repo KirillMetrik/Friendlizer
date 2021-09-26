@@ -7,8 +7,8 @@ namespace Friendlizer.Controllers
 {
     public class FriendsSetImportResult
     {
-        public long id;
-        public string filename;
-        public long imported;
+        public long id { get; set; }
+        public string filename { get; set; }
+        public long imported { get; set; }
     }
 }
