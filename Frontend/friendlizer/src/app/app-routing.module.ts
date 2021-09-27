@@ -6,11 +6,17 @@ import { StatisticsComponent } from './statistics/statistics.component';
 const routes: Routes = [
     {
         path: '',
-        component: DatasetsComponent
+        component: DatasetsComponent,
+        data: {
+            title: 'Datasets Management'
+        }
     },
     {
         path: 'statistics',
-        component: StatisticsComponent
+        component: StatisticsComponent,
+        data: {
+            title: 'Statistics'
+        }
     }
 ];
 

@@ -1,1 +1,15 @@
-Statistics here
+<mat-spinner *ngIf="isBusy"></mat-spinner>
+<mat-form-field appearance="fill">
+    <mat-label>Choose dataset</mat-label>
+    <mat-select [(value)]="selectedDs">
+        <mat-option *ngFor="let ds of datasets$ | async" [value]="ds.id">{{ds.filename}}</mat-option>
+    </mat-select>
+</mat-form-field>
+<button mat-raised-button color="primary" [disabled]="!selectedDs" (click)="loadStats()">Show</button>
+
+<mat-card *ngIf="(stats$ | async) as stats">
+    <mat-card-content>
+        <p>Total Users: {{stats.totalUsers}}</p>
+        <p>Average Number of Friends For Users: {{stats.avgFriendsCount}}</p>
+    </mat-card-content>
+</mat-card>
