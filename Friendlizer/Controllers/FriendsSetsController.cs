@@ -67,35 +67,15 @@ namespace Friendlizer.Controllers
             return res;
         }
 
-        // PUT: api/FriendsSets/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFriendsSet(long id, FriendsSet friendsSet)
+        [HttpGet("{setId}/relations")]
+        public async Task<ActionResult<Relation[]>> GetRelations(long setId)
         {
-            if (id != friendsSet.ID)
+            if (!FriendsSetExists(setId))
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(friendsSet).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FriendsSetExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return await (from r in _context.Relations where r.FriendsSetId == setId select r).ToArrayAsync();
         }
 
         // POST: api/FriendsSets
@@ -124,22 +104,6 @@ namespace Friendlizer.Controllers
             return CreatedAtAction("GetFriendsSet", 
                 new { id = newEntity.Entity.ID }, 
                 new FriendsSetImportResult { id = newEntity.Entity.ID, filename = newEntity.Entity.Filename, imported = relations.Count() });
-        }
-
-        // DELETE: api/FriendsSets/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFriendsSet(long id)
-        {
-            var friendsSet = await _context.FriendsSetItems.FindAsync(id);
-            if (friendsSet == null)
-            {
-                return NotFound();
-            }
-
-            _context.FriendsSetItems.Remove(friendsSet);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         private bool FriendsSetExists(long id)
