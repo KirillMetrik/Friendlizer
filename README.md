@@ -25,4 +25,5 @@ Since this is only a testing software (not intended for production uses), the fo
 * Frontend is small and doesn't really separate data retrieval logic into separate components/services. Real-life app would certainly do it.
 * Backend uses in-memory database (not bound to a real SQL database).
 * Backend contains SQL/LINQ queries directly in controller. In real-life app this logic would be probably moved to separate classes but for a small testing app this is still maintanable.
-* Relations for graph a returned by a single call. For testing purposes of 88 thousand records this is still ok but in real-life app it would be good to read in pages.
+* Relations for graph are returned by a single call. For testing purposes of 88 thousand records this is still ok but in real-life app it would be good to read in pages.
+* It is impossible to visualize all 88 thousands of relations at once (on any normal PC). Plus this kind of visualization would represent a mess of lines and circles. I've chosen to visualize pages of data. For now this is a simple paging which gives some good insights on connections between nodes but it could be even better if we used a "smarter" approach for choosing pages (e.g. we could take the first X nodes and visualize their relations on a depth-first basis - this might provide more valuable insights for users).

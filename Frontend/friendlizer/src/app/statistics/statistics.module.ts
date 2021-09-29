@@ -6,10 +6,10 @@ import { StatisticsComponent } from './statistics.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RelationsGraphComponent } from './relations-graph.component';
-import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
-    imports: [CommonModule, MatSelectModule, MatButtonModule, MatCardModule, MatProgressSpinnerModule, NgxGraphModule],
+    imports: [CommonModule, MatSelectModule, MatButtonModule, MatCardModule, MatProgressSpinnerModule, MatPaginatorModule],
     exports: [],
     declarations: [StatisticsComponent, RelationsGraphComponent],
     providers: [],
