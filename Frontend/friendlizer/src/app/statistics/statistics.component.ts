@@ -20,7 +20,7 @@ export class StatisticsComponent implements OnInit {
         mergeMap(ds => this.httpClient.get<Stats>(`https://localhost:44351/api/FriendsSets/${ds}/stats`).pipe(finalize(() => this.isStatsBusy = false)))
     );
     relations$ = this.selectedDs$.pipe(
-        tap(() => this.isRelationsBusy = true)  ,
+        tap(() => this.isRelationsBusy = true),
         mergeMap(ds => this.httpClient.get<Relation[]>(`https://localhost:44351/api/FriendsSets/${ds}/relations`).pipe(finalize(() => this.isRelationsBusy = false)))
     );
 
