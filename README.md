@@ -2,6 +2,8 @@
 
 Code challenge task for LinkSoft.
 
+![Friendlizer screenshot](https://i.ibb.co/sjBbz43/friendlizer.png "Screenshot")
+
 ## Prerequisites
 
 The following software must be installed:
