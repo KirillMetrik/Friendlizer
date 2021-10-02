@@ -20,6 +20,11 @@ The following software must be installed:
 1. Run `ng serve`.
 1. Open http://localhost:4200/
 
+## Running unit tests
+
+* On Backend: build and run `Friendlizer-tests.csproj`
+* On Frontend: run `ng test`
+
 ## Implementation Remarks
 
 For "senior developer" task **I've chosen to implement graph visualization** (since I prefer to develop something a user can "see"), i.e. additional task number 2.
